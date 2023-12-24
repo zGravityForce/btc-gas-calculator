@@ -178,7 +178,7 @@ export default function Home() {
                   
                 })}
                 <h3>
-                  {`Your CPFP may need around ${calCPFPFee?.gasByvB} sat/vb or ${calCPFPFee?.btc} btc to increasing!`}
+                  {`Your CPFP may require approximately ${calCPFPFee?.gasByvB} sat/vB or ${calCPFPFee?.btc} BTC to increase the speed!`}
                 </h3>
               </div> : 
               <div>{"Please Check Input Your Tx Id Current"}</div>
