@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 6rem;
+  padding: 1rem;
   min-height: 100vh;
 }
 
@@ -34,14 +34,40 @@
   margin-bottom: 20px;
 }
 
-.box h3 {
+/* .box h3 {
   text-align: center;
   margin-bottom: 20px;
+} */
+
+
+
+
+
+.gas__box {
+  display: flex;
+  margin-bottom: 30px;
+  justify-content: center;
 }
 
-.gas_box {
-  display: flex;
+.rate-info {
+  color: #FFA500;
+  display: inline;
+  margin-right: 30px; /* 或者您想要的任何间距 */
+  font-size: 16px;
+  font-weight: 600;
 }
+
+@media screen and (max-width: 600px) {
+  .gas__box {
+    display: block;
+    text-align: center;
+  }
+  .rate-info  {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+
 
 .input__box {
   display: flex;

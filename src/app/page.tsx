@@ -159,9 +159,10 @@ export default function Home() {
          <div className={styles.box}>
           <h1>BTC CPFP Calculator</h1>
           <div className={styles.gas__box}>
-            <h3 style={{color: "#FFA500"}}>
-                {`Slow: ${gas?.hourFee} sat/vB | Avg: ${gas?.halfHourFee} sat/vB | Fast: ${gas?.fastestFee} sat/vB | Fresh: ${timeLeft}`}
-            </h3>
+            <span className={styles['rate-info']}>{`Slow: ${gas?.hourFee} sat/vB`}</span>
+            <span className={styles['rate-info']}>{`Avg: ${gas?.halfHourFee} sat/vB`}</span>
+            <span className={styles['rate-info']}>{`Fast: ${gas?.fastestFee} sat/vB`}</span>
+            <span className={styles['rate-info']}>{`Fresh time: ${timeLeft}`}</span>
           </div>  
           {RenderInputText("Transaction Id:", (text) => {
             getTx(text)
