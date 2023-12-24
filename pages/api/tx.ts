@@ -17,7 +17,7 @@ export default async function getTX(
         });
       
         const tx = await transactions.getTx({ txid: txId });
-        console.log(tx);
+        // console.log(tx);
           
         // const { bitcoin: { fees } } = mempoolJS({
         //     hostname: 'mempool.space'
