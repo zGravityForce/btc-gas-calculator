@@ -97,7 +97,7 @@ function calCPFPFeeFun(tx: TxType, speedUpGas: number): CalCPFPFeeType {
 
 
   return {
-    btc: fixTwoDecimal(speedUpGasByBtc),
+    btc: speedUpGasByBtc/100000000,
     gasByvB: fixTwoDecimal(speedUpGasByBtc/LIMITPERTXFEE),
   }
 }
