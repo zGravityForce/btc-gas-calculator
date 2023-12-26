@@ -35,17 +35,18 @@ function RenderInputNumber(label: string, defaultValue: number, onChange: (numbe
 }
 
 
-// type TxType = {
-//   fee: number;
-//   txid: string;
-//   weight: number
-// }
+type adType = {
+  fee: number;
+  txid: string;
+  weight: number
+}
 
-// type TxCPFPType = {
-//   ancestors: any[] | [],
-//   descendants: any[] | [],
-//   effectiveFeePerVsize: number,
-// }
+type cpfpType = {
+  ancestors: adType[] | [],
+  descendants: adType[] | [],
+  adjustedVsize: number,
+  effectiveFeePerVsize: number,
+}
 
 type TxType = {
   fee: number,
@@ -62,12 +63,13 @@ type GasType = {
 }
 
 type CalCPFPFeeType = {
+  currentGas: number,
   btc: number,
   gasByvB: number,
 }
 
-function fixTwoDecimal(num: number) {
-  return parseFloat(num.toFixed(2))
+function fixTwoDecimal(num: number, fixNumber: number = 2) {
+  return parseFloat(num.toFixed(fixNumber))
 }
 
 // function calCPFPFeeFun(tx: TxCPFPType, speedUpGas: number): CalCPFPFeeType {
@@ -86,20 +88,42 @@ function fixTwoDecimal(num: number) {
 //   }
 // }
 
-function calCPFPFeeFun(tx: TxType, speedUpGas: number): CalCPFPFeeType {
+function calFeeFun(tx: TxType, speedUpGas: number): CalCPFPFeeType {
   const currentVb: number = tx.weight / 4;
   const currentGas: number = tx.fee /  currentVb;
 
-  // const descendantSize = tx.descendants.reduce((sum, tx) => sum + tx.weight, 0);
-  // const ancestorsSize = tx.ancestors.reduce((sum, tx) => sum + tx.weight, 0);
 
   const speedUpGasByBtc = LIMITPERTXFEE * speedUpGas + currentVb * (speedUpGas - currentGas);
 
 
   return {
+    currentGas: fixTwoDecimal(currentGas),
     btc: speedUpGasByBtc/100000000,
     gasByvB: fixTwoDecimal(speedUpGasByBtc/LIMITPERTXFEE),
   }
+}
+
+// Helper function to calculate total weight
+function getTotalWeight(transactions: adType[]) {
+  if (!transactions) return 0;
+  return transactions.reduce((sum, tx) => sum + tx.weight / 4, 0);
+}
+
+function calCPFPFun(cpfp: cpfpType,  speedUpGas: number):  CalCPFPFeeType {
+    const currentGas: number = cpfp.effectiveFeePerVsize;
+
+    const descendantSize = getTotalWeight(cpfp.descendants);
+    const ancestorsSize = getTotalWeight(cpfp.ancestors);
+    const currentSize = cpfp.adjustedVsize ? cpfp.adjustedVsize : 0;
+
+    const speedUpGasByBtc = LIMITPERTXFEE * speedUpGas + (descendantSize + ancestorsSize + currentSize) * (speedUpGas - currentGas);
+
+    return {
+      currentGas: fixTwoDecimal(currentGas),
+      btc: fixTwoDecimal(speedUpGasByBtc/100000000, 8),
+      gasByvB: fixTwoDecimal(speedUpGasByBtc/LIMITPERTXFEE),
+    }
+
 }
 
 
@@ -107,16 +131,20 @@ function calCPFPFeeFun(tx: TxType, speedUpGas: number): CalCPFPFeeType {
 
 export default function Home() {
 
-  const [txCPFP, setTxCPFP] = useState<TxType | undefined>(undefined);
+  const [tx, setTx] = useState<TxType | undefined>(undefined);
+  const [cpfp, setCPFP] = useState<cpfpType | undefined>(undefined);
   const initialTime = 60;
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [gas, setGas] = useState<GasType|undefined>(undefined);
+  const [gasSelect, setGasSelect] = useState<number | undefined>(undefined);
   const [calCPFPFee, setCalCPFPFee] = useState<CalCPFPFeeType>();
+
 
   const getGas = () => {
     axios.get('api/gas').then(response => {
       // console.log(response.data);
       setGas(response.data)
+      setGasSelect(response.data.fastestFee)
     }).catch(error => {
       setGas(undefined)
       // console.error('There was an error!', error);
@@ -130,13 +158,42 @@ export default function Home() {
       if (response && response.data) {
         const data = response.data;
         // console.log(data);
-        setTxCPFP(data);
-        setCalCPFPFee(calCPFPFeeFun(response.data, gas?.fastestFee ?? 100));
+        setTx(data);
       }}).catch(error => {
-        setTxCPFP(undefined);
+        setTx(undefined);
         console.error('There was an error!', error);
   })};
 
+
+  const getCPFT = (txId: string) => {
+    // FeesMempoolBlocks
+    axios.get('api/cpfp', {params: {
+      txId: txId
+    }}).then(response => {
+      if (response && response.data) {
+        const data = response.data;
+        if (data.effectiveFeePerVsize) {
+          setCPFP(data);
+        }
+      }}).catch(error => {
+        setCPFP(undefined);
+        console.error('There was an error!', error);
+  })};
+
+  useEffect(() => {
+    // 
+    if (cpfp) {
+      if ( gasSelect) {
+        setCalCPFPFee(calCPFPFun(cpfp, gasSelect));
+      }
+    } else {
+      if (tx && gasSelect) {
+        setCalCPFPFee(calFeeFun(tx, gasSelect));
+
+      }
+    }
+    
+  }, [cpfp, gasSelect, tx])
 
 
   useEffect(() => {
@@ -165,18 +222,17 @@ export default function Home() {
             <span className={styles['rate-info']}>{`Fresh time: ${timeLeft}`}</span>
           </div>  
           {RenderInputText("Transaction Id:", (text) => {
-            getTx(text)
+            getTx(text);
+            getCPFT(text);
           })}
           <div className={styles.tx_box}>
-            {txCPFP !== undefined ?
+            {tx !== undefined ?
               <div style={{width: '100%'}}>
                 <h3>
-                  {`Your tx current fee: ${fixTwoDecimal(txCPFP.fee / (txCPFP.weight / 4))} sat/vb`}
+                  {`Your tx current fee: ${calCPFPFee?.currentGas} sat/vb`}
                 </h3>
                 {RenderInputNumber("Increased Gas Speed:", gas?.fastestFee || 100,  (number) => {
-                  const speedUpGas = number ?? gas?.fastestFee ?? 100;
-                  setCalCPFPFee(calCPFPFeeFun(txCPFP, speedUpGas));
-                  
+                  setGasSelect(number ?? gas?.fastestFee ?? 100)
                 })}
                 <h3>
                   {`Your CPFP may require approximately ${calCPFPFee?.gasByvB} sat/vB or ${calCPFPFee?.btc} BTC to increase the speed!`}
