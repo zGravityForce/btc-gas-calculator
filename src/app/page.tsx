@@ -5,6 +5,7 @@
 import styles from './page.module.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
+import InputNumberBox from '@/component/InputNumberBox';
 const LIMITPERTXFEE = 160;
 
 
@@ -21,18 +22,26 @@ function RenderInputText(label: string, onChange: (text: string) => void) {
   );
 }
 
-function RenderInputNumber(label: string, defaultValue: number, onChange: (number: number| undefined) => void) {
-  return (
-    <div className={styles["input-number__box"]}>
-      <label>
-        {label}
-      </label>
-      <input defaultValue={defaultValue} type='number' onChange={(e) => {
-        onChange(Number(e.target.value))
-      }} />
-    </div>
-  );
-}
+// // {label: string, defaultValue: number, onChange: (number: number| undefined) => void}
+// const InputNumberBox = ({label: string, defaultValue: number, onChange: (number: number| undefined) => void}) => {
+//   const [value, setValue] = useState(defaultValue);
+
+//     // Update the state and call the onChange prop function
+//     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+//       const newValue = Number(e.target.value);
+//       setValue(newValue);
+//       onChange(newValue);
+//     };
+
+//   return (
+//     <div className={styles["input-number__box"]}>
+//       <label>
+//         {label}
+//       </label>
+//       <input value={value} type='number' onChange={handleChange} />
+//     </div>
+//   );
+// }
 
 
 type adType = {
@@ -231,9 +240,9 @@ export default function Home() {
                 <h3>
                   {`Your tx current fee: ${calCPFPFee?.currentGas} sat/vb`}
                 </h3>
-                {RenderInputNumber("Increased Gas Speed:", gas?.fastestFee || 100,  (number) => {
-                  setGasSelect(number ?? gas?.fastestFee ?? 100)
-                })}
+                <InputNumberBox label='Increased Gas Speed:' defaultValue={gas?.fastestFee || 100} onChange={(number) => {
+                  setGasSelect(number ?? gas?.fastestFee)
+                }}/>
                 <h3>
                   {`Your CPFP may require approximately ${calCPFPFee?.gasByvB} sat/vB or ${calCPFPFee?.btc} BTC to increase the speed!`}
                 </h3>
