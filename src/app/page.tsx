@@ -189,6 +189,17 @@ export default function Home() {
         console.error('There was an error!', error);
   })};
 
+
+  const getBTCPrice = () => {
+    // FeesMempoolBlocks
+    axios.get('api/price', {params: {
+      symbol: "BTCUSDT"
+    }}).then(response => {
+      console.log(response.data)
+    }).catch(error => {
+      console.error('There was an error!', error);
+  })};
+
   useEffect(() => {
     // 
     if (cpfp) {
@@ -208,6 +219,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       if (timeLeft === initialTime) {
+        getBTCPrice();
         getGas();
       }
       // console.log(txCPFP)
