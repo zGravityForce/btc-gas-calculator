@@ -3,6 +3,7 @@ import styles from './index.module.css'
 import axios from 'axios';
 import InputNumberBox from '../InputNumberBox';
 import { GasType } from '@/app/page';
+import { fixTwoDecimal } from '@/utils/number-helper';
 
 const LIMITPERTXFEE = 160;
 
@@ -49,9 +50,7 @@ function RenderInputText(label: string, onChange: (text: string) => void) {
 }
 
 
-function fixTwoDecimal(num: number, fixNumber: number = 2) {
-    return parseFloat(num.toFixed(fixNumber))
-}
+
 
 function calFeeFun(tx: TxType, speedUpGas: number): CalCPFPFeeType {
     const currentVb: number = tx.weight / 4;

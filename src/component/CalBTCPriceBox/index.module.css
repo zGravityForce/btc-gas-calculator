@@ -1,0 +1,42 @@
+.box {
+    margin: 30px auto;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    border-radius: 10px; /* 设置圆角半径为10像素 */
+    padding: 30px 0;
+}
+
+.box h1 {
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.gas__box {
+    display: flex;
+    justify-content: center;
+}
+  
+.rate-info {
+    color: #FFA500;
+    display: inline;
+    margin-right: 30px; /* 或者您想要的任何间距 */
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.rate-info:last-child {
+    margin-right: 0; /* 或者您想要的任何间距 */
+}
+  
+@media screen and (max-width: 600px) {
+    .gas__box {
+      display: block;
+      text-align: center;
+    }
+    .rate-info  {
+      display: block;
+      margin: 10px auto;
+    }
+}
