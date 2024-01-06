@@ -1,0 +1,10 @@
+.input-number__box {
+    width: 100%;
+    text-align: center;
+}
+  
+.input-number__box input{
+    height: 30px;
+    width: 80px;
+    margin-left: 10px;
+}

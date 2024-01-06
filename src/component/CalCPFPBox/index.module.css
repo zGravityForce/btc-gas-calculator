@@ -1,0 +1,43 @@
+.box {
+    margin: 30px auto;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    border-radius: 10px; /* 设置圆角半径为10像素 */
+    padding: 30px 0;
+}
+
+.box h1 {
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.tx_box {
+    margin-top: 20px;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+}
+
+.tx_box h3 {
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+.input__box {
+    display: flex;
+    align-items: center;
+    color: black;
+    justify-content: center;
+    column-gap: 2%;
+    height: 30px;
+}
+  
+.input__box input {
+    width: 50%;
+}
+  
+  

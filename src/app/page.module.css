@@ -8,7 +8,7 @@
 }
 
 .description {
-  display: inherit;
+  display: block;
   justify-content: inherit;
   align-items: inherit;
   font-size: 0.85rem;
@@ -19,20 +19,7 @@
   color: black;
 }
 
-.box {
-  margin: auto;
-  width: 100%;
-  height: auto;
-  background-color: #fff;
-  border-radius: 10px; /* 设置圆角半径为10像素 */
-  padding: 50px 0;
-}
 
-.box h1 {
-  color: black;
-  text-align: center;
-  margin-bottom: 20px;
-}
 
 /* .box h3 {
   text-align: center;
@@ -41,68 +28,3 @@
 
 
 
-
-
-.gas__box {
-  display: flex;
-  margin-bottom: 30px;
-  justify-content: center;
-}
-
-.rate-info {
-  color: #FFA500;
-  display: inline;
-  margin-right: 30px; /* 或者您想要的任何间距 */
-  font-size: 16px;
-  font-weight: 600;
-}
-
-@media screen and (max-width: 600px) {
-  .gas__box {
-    display: block;
-    text-align: center;
-  }
-  .rate-info  {
-    display: block;
-    margin-bottom: 5px;
-  }
-}
-
-
-.input__box {
-  display: flex;
-  align-items: center;
-  color: black;
-  justify-content: center;
-  column-gap: 2%;
-  height: 30px;
-}
-
-.input__box input {
-  width: 50%;
-}
-
-
-.tx_box {
-  margin-top: 20px;
-  justify-content: center;
-  display: flex;
-  width: 100%;
-}
-
-.tx_box h3 {
-  color: #007bff;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.input-number__box {
-  width: 100%;
-  text-align: center;
-}
-
-.input-number__box input{
-  height: 30px;
-  width: 80px;
-  margin-left: 10px;
-}

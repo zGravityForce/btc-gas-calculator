@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
-import styles from '../app/page.module.css'
+import styles from './index.module.css'
 
 // Define a type for the component's props
 type InputNumberBoxProps = {

@@ -5,7 +5,7 @@ import axios from 'axios';
 
 // Define a type for the component's props
 type DisplayGasBoxProps = {
-  onFresh: (gasSelect: number) => void;
+  onFresh: (gasSelect: GasType) => void;
 };
 
 const DisplayGasBox: React.FC<DisplayGasBoxProps> = ({ onFresh }) => {
@@ -18,10 +18,10 @@ const DisplayGasBox: React.FC<DisplayGasBoxProps> = ({ onFresh }) => {
         axios.get('api/gas').then(response => {
             // console.log(response.data);
             setGas(response.data)
-            onFresh(response.data.fastestFee)
+            onFresh(response.data)
         }).catch(error => {
             setGas(undefined)
-            // console.error('There was an error!', error);
+            console.error('There was an error!', error);
         })
     }
 
@@ -40,7 +40,7 @@ const DisplayGasBox: React.FC<DisplayGasBoxProps> = ({ onFresh }) => {
 
   return (
     <div className={styles.box}>
-          <h1>BTC TRANSACTION FEES</h1>
+          <h1>BTC Transaction Fees</h1>
           <div className={styles.gas__box}>
             <span className={styles['rate-info']}>{`Slow: ${gas?.hourFee} sat/vB`}</span>
             <span className={styles['rate-info']}>{`Avg: ${gas?.halfHourFee} sat/vB`}</span>
