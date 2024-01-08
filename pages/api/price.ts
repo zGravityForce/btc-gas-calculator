@@ -51,7 +51,7 @@ export default async function getPrice(
           
         
       } catch (error) {
-          res.status(500).json({ message: 'An unexpected error occurred' });
+          res.status(500).json({ message: error });
       
       }
     } else {
