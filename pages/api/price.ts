@@ -42,8 +42,11 @@ export default async function getPrice(
         //   }
         // );
 
-        const response = await fetch(`https://api.binance.com/api/v3/avgPrice?symbol=${symbol}`);
-        const data = await response.json() as ApiResponse;
+        // const response = await fetch(`https://api.binance.com/api/v3/avgPrice?symbol=${symbol}`);
+
+        const url = `https://api.binance.com/api/v3/avgPrice?symbol=${symbol}`;
+        const response = await axios.get(url);
+        const data = response.data as ApiResponse;
         res.status(200).json(data);
           
         
