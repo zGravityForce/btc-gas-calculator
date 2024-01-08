@@ -51,10 +51,10 @@ const CalBTCPriceBox: React.FC = () => {
             <h1>Convert BTC/USDT</h1>
             <div className={styles.gas__box}>
                 <span className={styles['rate-info']}>
-                    <InputNumber addonAfter="BTC" value={btcUsd.btc} onChange={getUsd} />
+                    <InputNumber addonAfter="BTC" value={btcUsd.btc} onChange={getUsd} min={0} defaultValue={0}/>
                 </span>
                 <span className={styles['rate-info']}>
-                    <InputNumber addonAfter="USDT" value={btcUsd.usd} onChange={getBtc} />
+                    <InputNumber addonAfter="USDT" value={btcUsd.usd} onChange={getBtc} min={0} defaultValue={0}/>
                 </span>
             </div>
         </div>
