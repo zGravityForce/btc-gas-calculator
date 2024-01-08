@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import bnApiInstance from '../utils/bnapi';
+import bnApiInstance from '../../utils/bnApiInstance';
 
 
 interface ApiResponse {
