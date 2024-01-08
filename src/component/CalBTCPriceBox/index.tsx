@@ -15,7 +15,10 @@ const CalBTCPriceBox: React.FC<CalBTCPriceBoxProps> = ({ onFresh }) => {
 
     const getBTCPrice = async () => {
         try {
-            const response = await axios.get('api/price', { params: { symbol: "BTCUSDT" } });
+            const url = `https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT`;
+            const response = await axios.get(url);
+            const data = response.data;
+            // const response = await axios.get('api/price', { params: { symbol: "BTCUSDT" } });
             if (response.data.price) {
                 const _btcPrice = Number(response.data.price);
                 setBtcPrice(_btcPrice);
