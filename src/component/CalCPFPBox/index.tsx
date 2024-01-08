@@ -3,7 +3,7 @@ import styles from './index.module.css'
 import axios from 'axios';
 import InputNumberBox from '../InputNumberBox';
 import { GasType } from '@/app/page';
-import { fixTwoDecimal } from '@/utils/number-helper';
+import { fixNumberDecimal } from '@/utils/number-helper';
 
 const LIMITPERTXFEE = 160;
 
@@ -60,9 +60,9 @@ function calFeeFun(tx: TxType, speedUpGas: number): CalCPFPFeeType {
     const speedUpGasByBtc = LIMITPERTXFEE * speedUpGas + currentVb * (speedUpGas - currentGas);
   
     return {
-      currentGas: fixTwoDecimal(currentGas),
+      currentGas: fixNumberDecimal(currentGas),
       btc: speedUpGasByBtc/100000000,
-      gasByvB: fixTwoDecimal(speedUpGasByBtc/LIMITPERTXFEE),
+      gasByvB: fixNumberDecimal(speedUpGasByBtc/LIMITPERTXFEE),
     }
 }
 
@@ -83,9 +83,9 @@ function calCPFPFun(cpfp: cpfpType,  speedUpGas: number):  CalCPFPFeeType {
     const speedUpGasByBtc = LIMITPERTXFEE * speedUpGas + (descendantSize + ancestorsSize + currentSize) * (speedUpGas - currentGas);
 
     return {
-        currentGas: fixTwoDecimal(currentGas),
-        btc: fixTwoDecimal(speedUpGasByBtc/100000000, 8),
-        gasByvB: fixTwoDecimal(speedUpGasByBtc/LIMITPERTXFEE),
+        currentGas: fixNumberDecimal(currentGas),
+        btc: fixNumberDecimal(speedUpGasByBtc/100000000, 8),
+        gasByvB: fixNumberDecimal(speedUpGasByBtc/LIMITPERTXFEE),
     }
 }
 

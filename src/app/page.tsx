@@ -7,6 +7,7 @@ import { useState } from 'react'
 import DisplayGasBox from '@/component/DisplayGasBox';
 import CalCPFPBox from '@/component/CalCPFPBox';
 import CalBTCPriceBox from '@/component/CalBTCPriceBox';
+import CalCostBox from '@/component/CalCostBox';
 
 
 
@@ -21,11 +22,16 @@ export type GasType = {
 export default function Home() {
 
   const [gas, setGas] = useState<GasType|undefined>(undefined);
+  const [btcPrice, setBtcPrice] = useState<number>(0);
   // const [gas, setGas] = useState<number | undefined>(undefined);
 
 
   const handleGasSelect = (gasFee: GasType) => {
     setGas(gasFee);
+  }
+
+  const handleBtcPriceSelect = (_btcPrice: number) => {
+    setBtcPrice(_btcPrice);
   }
 
   //881754dd81da7043581378721d183a3944030f9587de5ac9c47bb4102c250c40
@@ -37,7 +43,8 @@ export default function Home() {
         <DisplayGasBox onFresh={handleGasSelect} />
         {gas? <>
           <CalCPFPBox gas={gas} />
-          <CalBTCPriceBox />
+          <CalBTCPriceBox onFresh={handleBtcPriceSelect}/>
+          <CalCostBox gas={gas} btcPrice={btcPrice}/>
         </> : null}
       </div>
     </main>

@@ -1,17 +1,26 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import styles from './index.module.css'
 import axios from 'axios';
-import { fixTwoDecimal } from '@/utils/number-helper';
+import { fixNumberDecimal } from '@/utils/number-helper';
 import { InputNumber } from 'antd';
 
-const CalBTCPriceBox: React.FC = () => {
+
+type CalBTCPriceBoxProps = {
+    onFresh: (btcFee: number) => void;
+  };
+
+const CalBTCPriceBox: React.FC<CalBTCPriceBoxProps> = ({ onFresh }) => {
     const [btcUsd, setBtcUsd] = useState({ btc: 1, usd: 0 });
     const [btcPrice, setBtcPrice] = useState<number>(0);
 
     const getBTCPrice = async () => {
         try {
             const response = await axios.get('api/price', { params: { symbol: "BTCUSDT" } });
-            setBtcPrice(Number(response.data.price));
+            if (response.data.price) {
+                const _btcPrice = Number(response.data.price);
+                setBtcPrice(_btcPrice);
+                onFresh(_btcPrice);
+            }
         } catch (error) {
             console.error('There was an error!', error);
         }
@@ -21,13 +30,13 @@ const CalBTCPriceBox: React.FC = () => {
 
     const getUsd = (btc: number | null) => {
       if (btc !== null) {
-        setBtcUsd({ btc, usd: fixTwoDecimal(btc * usdPerBtc) });
+        setBtcUsd({ btc, usd: fixNumberDecimal(btc * usdPerBtc) });
       }
   };
   
   const getBtc = (usd: number | null) => {
       if (usd !== null) {
-        setBtcUsd({ btc: fixTwoDecimal(usd / usdPerBtc, 8), usd });
+        setBtcUsd({ btc: fixNumberDecimal(usd / usdPerBtc, 8), usd });
       }
   };
 
@@ -42,7 +51,7 @@ const CalBTCPriceBox: React.FC = () => {
 
     useEffect(() => {
         if (btcPrice > 0) {
-            setBtcUsd(prev => ({ ...prev, usd: fixTwoDecimal(prev.btc * btcPrice) }));
+            setBtcUsd(prev => ({ ...prev, usd: fixNumberDecimal(prev.btc * btcPrice) }));
         }
     }, [btcPrice]);
 

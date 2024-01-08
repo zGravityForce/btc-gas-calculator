@@ -1,0 +1,86 @@
+.box {
+    margin: 50px auto;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    border-radius: 10px; /* 设置圆角半径为10像素 */
+    padding: 30px 0;
+}
+
+.box h1 {
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.cost__form {
+    padding: 0 35%;
+}
+
+.btn-group {
+    display: flex !important;
+    justify-content: space-between !important;
+}
+
+
+.formulae_box {
+    margin: 20px 0;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+}
+
+.formulae_box h4 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.result_box {
+    margin: 20px 0;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    padding: 0 15% 0 30%;
+}
+
+.vertical_divider {
+    margin: 0 30px 0 0;
+    background-color: black;
+    width: 1px;
+    height: 60px;
+    display: inline;
+}
+
+
+.rate-info {
+    color: #FFA500;
+    display: inline;
+    margin-right: 30px; /* 或者您想要的任何间距 */
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.rate-info:last-child {
+    margin-right: 0; /* 或者您想要的任何间距 */
+}
+  
+@media screen and (max-width: 600px) {
+
+    .vertical_divider {
+        display: block;
+        margin: 15px auto;
+        width: 60%;
+        height: 1px;
+    }
+
+    .result_box {
+      display: block;
+      text-align: center;
+      padding: 0;
+    }
+    .rate-info  {
+      display: block;
+      margin: 10px auto;
+    }
+}
