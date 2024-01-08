@@ -4,22 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import axios, { AxiosInstance } from 'axios';
 
-const bnApiInstance: AxiosInstance = axios.create({
-  baseURL: 'https://api.binance.com/api/v3', // Use your API base URL
-  // Other global settings
-});
 
-// Optionally add global request or response interceptors
-bnApiInstance.interceptors.request.use(
-  config => {
-    // Modify or add config settings
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
-``
 interface ApiResponse {
     data: {
         mins: number,
@@ -41,9 +26,25 @@ export default async function getPrice(
             symbol: string;
         };
 
-        const response = await bnApiInstance.get<ApiResponse>(`/avgPrice?symbol=${symbol}`)
+        // const bnApiInstance: AxiosInstance = axios.create({
+        //   baseURL: 'https://api.binance.com/api/v3', // Use your API base URL
+        //   // Other global settings
+        // });
+        
+        // // Optionally add global request or response interceptors
+        // bnApiInstance.interceptors.request.use(
+        //   config => {
+        //     // Modify or add config settings
+        //     return config;
+        //   },
+        //   error => {
+        //     return Promise.reject(error);
+        //   }
+        // );
 
-        res.status(200).json(response.data);
+        const response = await fetch(`https://api.binance.com/api/v3/avgPrice?symbol=${symbol}`);
+        const data = await response.json() as ApiResponse;
+        res.status(200).json(data);
           
         
       } catch (error) {
